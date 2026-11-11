@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#101619" />
+  <link rel="icon" href="data:," />
+  <title>BREACH: NIGHTFALL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="game"></canvas>
+    <div class="vignette"></div>
+    <div id="hud" class="hidden">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">N</span><span>NIGHTFALL<span class="brand-sub">TACTICAL OPERATIONS</span></span></div>
+        <div class="round-panel"><span class="round-label">ROUND <b id="round-num">01</b></span><span id="timer" class="timer">01:45</span><span class="round-state" id="round-state">LIVE OPERATION</span></div>
+        <div class="team-score"><span class="team blue">◈ <b id="score-blue">0</b></span><span class="score-divider">—</span><span class="team red"><b id="score-red">0</b> ◈</span></div>
+      </header>
+      <div class="objective"><span class="objective-dot"></span><span id="objective-text">ELIMINATE HOSTILE OPERATORS</span><span class="objective-site">SECTOR <b>A</b></span></div>
+      <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+      <div class="hit-marker" id="hit-marker">×</div>
+      <div class="killfeed" id="killfeed"></div>
+      <div class="bottom-hud">
+        <div class="player-readout"><span class="readout-icon">✚</span><div><strong id="health-value">100</strong><small>VITALS</small></div><div class="health-track"><i id="health-bar"></i></div></div>
+        <div class="center-readout"><span class="live-dot"></span><span>COMMS SECURE</span><kbd id="control-hint">WASD MOVE · MOUSE AIM · CLICK FIRE</kbd></div>
+        <div class="weapon-readout"><div class="ammo"><strong id="ammo-value">30</strong><span>/ <b id="reserve-value">90</b></span></div><div class="weapon-name">VXR-9 <small>5.56 × 45</small></div><div class="ammo-track"><i id="ammo-bar"></i></div></div>
+      </div>
+      <div class="mobile-controls" id="mobile-controls">
+        <div class="move-zone"><div id="joystick" class="joystick"><div class="joy-ring"></div><div id="joy-knob" class="joy-knob"></div><span class="joy-label">MOVE</span></div></div>
+        <div class="look-zone" id="look-zone"></div>
+        <div class="mobile-actions">
+          <button id="reload-btn" class="action-btn reload-btn"><span>↻</span><small>RELOAD</small></button>
+          <button id="fire-btn" class="fire-btn"><span class="fire-core"></span><b>FIRE</b></button>
+          <button id="sprint-btn" class="action-btn sprint-btn"><span>»</span><small>SPRINT</small></button>
+        </div>
+      </div>
+      <div id="reload-status" class="reload-status"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+    <section id="menu" class="menu-screen">
+      <div class="menu-grid"></div>
+      <div class="menu-top"><div class="brand large"><span class="brand-mark">N</span><span>NIGHTFALL<span class="brand-sub">TACTICAL OPERATIONS</span></span></div><div class="build-tag">FIELD TEST 01.08 <span>●</span> ONLINE</div></div>
+      <div class="menu-content">
+        <div class="eyebrow"><span></span> COUNTER-ASSAULT // OPERATION 07</div>
+        <h1>HOLD THE<br><em>LINE.</em></h1>
+        <p class="menu-copy">A hostile squad has breached the perimeter.<br>Deploy, clear the site, and make it out.</p>
+        <div class="mission-card"><div class="mission-icon">⌖</div><div><small>ACTIVE OPERATION</small><strong>IRON QUARRY</strong><span>RUST BELT · 18:40 LOCAL</span></div><div class="mission-difficulty"><span>THREAT LEVEL</span><div>◆ ◆ ◆ <i>◆ ◆</i></div></div></div>
+        <button id="deploy-btn" class="deploy-btn"><span>DEPLOY TO OPERATION</span><b>→</b></button>
+        <div class="menu-footnote">SURVIVE THE ROUND &nbsp;·&nbsp; ELIMINATE ALL HOSTILES &nbsp;·&nbsp; FIRST TO 5</div>
+      </div>
+      <div class="menu-aside"><span class="aside-line"></span><span>FIELD NOTES&nbsp; / &nbsp;01</span><p>Keep moving.<br>Watch your corners.<br>Trust your instincts.</p><span class="aside-coordinate">35°41'12.8"N<br>139°41'30.2"E</span></div>
+      <div class="menu-bottom"><span>© NIGHTFALL SECURITY GROUP</span><span>TACTICAL SIMULATION <i>V.1.0.4</i></span></div>
+    </section>
+    <section id="round-result" class="result-screen hidden"><div class="result-kicker">OPERATION REPORT <span>·</span> ROUND <b id="result-round">01</b></div><h2 id="result-title">SECTOR<br><em>SECURED.</em></h2><p id="result-copy">Hostile presence neutralized.</p><div class="result-stats"><div><b id="result-kills">0</b><span>CONFIRMED</span></div><div><b id="result-accuracy">0%</b><span>ACCURACY</span></div><div><b id="result-health">100</b><span>VITALS LEFT</span></div></div><button id="next-round" class="deploy-btn"><span>CONTINUE OPERATION</span><b>→</b></button></section>
+    <div id="damage-flash" class="damage-flash"></div>
+    <div id="pause-screen" class="pause-screen hidden"><div class="pause-card"><span class="eyebrow">FIELD PAUSED</span><h2>TAKE A<br><em>BREATHER.</em></h2><p>The operation is waiting.</p><button id="resume-btn" class="deploy-btn"><span>BACK TO THE FIELD</span><b>→</b></button></div></div>
+  </main>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
